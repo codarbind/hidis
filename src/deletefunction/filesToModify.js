@@ -1,8 +1,6 @@
 import fs from "fs";
 import * as acorn from "acorn";
-import * as walk from "acorn-walk";
 import childProcess from "child_process";
-import { removeNodes } from "./removeNodes.js";
 import { generate } from "escodegen";
 
 export const get_files_to_modify = () => {
