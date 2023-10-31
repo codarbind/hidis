@@ -38,6 +38,16 @@ npm  install  hidis  --save-dev
 
 ```
 
+### Hidis Setup
+
+You need to import hidis only once but in your main /entry point file.
+
+Import `hidis` like the below inside a file that you are sure would be loaded/required when the node server starts. It is called `main entry point file`. Your main file could be app.js or index.js. To confirm which file, check your `package.json` look for the value of main, that value/path leads to the file you are looking for
+
+```js
+import hidis from "hidis";
+```
+
 ## How does it work?
 
 To use Hidis, call the `hidis` function anywhere in your project. Hidis takes a string as an argument, so place your code inside single quotes. Make sure to separate more than one line of code with semicolons. Here's a sample:
