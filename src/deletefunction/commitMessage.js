@@ -1,11 +1,24 @@
 import fs from "fs";
 
 export const get_commit_message = () => {
-  // Get the original commit message
-  const commitMessage = fs
-    .readFileSync(process.env.HUSKY_GIT_PARAMS, "utf8")
-    .trim();
-  console.log({ pev: process.env.HUSKY_GIT_PARAMS });
+  // Access the command line arguments
+  const command = process.argv.slice(2).join(" "); // Combine all arguments into a single string
 
-  return commitMessage;
+  if (command) {
+    const parts = command.split(/(?<=-m )/); // Split the command at '-m ' preserving '-m ' in the parts
+
+    if (parts.length >= 2) {
+      // The first part is 'git commit' and the second part is the commit message
+      const gitCommitCommand = parts[0];
+      const commitMessage = parts[1];
+
+      return commitMessage;
+    } else {
+      throw new Error(
+        "Invalid command. Expected format: \"git commit -m 'commit message'\""
+      );
+    }
+  } else {
+    throw new Error("No command provided.");
+  }
 };

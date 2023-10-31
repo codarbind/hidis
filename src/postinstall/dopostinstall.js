@@ -5,7 +5,8 @@ import { updateUserPrecommScript } from "./updateUserPrecommitScript.js";
 export const dopostintall = () => {
   createHidisFolder();
   createPrecommFile();
-  updateUserPrecommScript();
+  //installHusky();
+  //updateUserPrecommScript();
   return true;
 };
 

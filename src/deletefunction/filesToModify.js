@@ -3,6 +3,7 @@ import * as acorn from "acorn";
 import * as walk from "acorn-walk";
 import childProcess from "child_process";
 import { removeNodes } from "./removeNodes.js";
+import { generate } from "escodegen";
 
 export const get_files_to_modify = () => {
   const filesToModify = childProcess
@@ -14,43 +15,31 @@ export const get_files_to_modify = () => {
   return filesToModify;
 };
 
-export const modify_files_and_commit = (
+export const modify_files_and_add = (
   filesToModify,
-  commitMessage,
   disposableFunctionName = "hidis"
 ) => {
+  // Code modification logic to remove disposable() functions
+
   filesToModify.forEach((filePath) => {
     let code = fs.readFileSync(filePath, "utf8");
-    const ast = acorn.parse(code, { sourceType: "module" });
-
-    // Code modification logic to remove disposable() functions
-
-    filesToModify.forEach((filePath) => {
-      let code = fs.readFileSync(filePath, "utf8");
-      const ast = acorn.parse(code, { sourceType: "module" });
-
-      // Walk the AST to find and remove disposable() calls
-      walk.simple(ast, {
-        CallExpression(node) {
-          if (node.callee.name === disposableFunctionName) {
-            // Remove the disposable() call and its arguments
-            removeNodes(node, ast.body);
-          }
-        },
-      });
-
-      // Convert the modified AST back to code
-      code = acorn.generate(ast, {
-        sourceMap: null,
-      });
-
-      // Write the modified code back to the file
-      fs.writeFileSync(filePath, code, "utf8");
+    const ast = acorn.parse(code, {
+      sourceType: "module",
+      ecmaVersion: 8,
     });
+
+    let initial_body = ast.body;
+    let filtered_body = initial_body.filter((r_n) => {
+      return r_n.expression?.callee?.name !== disposableFunctionName;
+    });
+
+    ast.body = filtered_body;
+    // Convert the modified AST back to code
+    code = generate(ast);
+
+    // Write the modified code back to the file
+    fs.writeFileSync(filePath, code, "utf8");
   });
-  childProcess.execSync("git add .");
 
-  childProcess.execSync(`git commit -F - <<< "${commitMessage}"`);
-
-  return true;
+  childProcess.execSync(`git add ${filesToModify.join(" ")}`);
 };
