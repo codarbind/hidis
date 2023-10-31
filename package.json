@@ -1,19 +1,25 @@
 {
   "name": "hidis",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "Hidis is a tool designed for developers who need to keep certain functions and code snippets on their local machines during development without committing or pushing them to remote branches (e.g., production).",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node ./src/postinstall/dopostinstall.js",
-    "precommit": "node .hidis/precomm.js"
+    "postinstall": "node ./src/postinstall/dopostinstall.js"
   },
-  "keywords": [],
+  "keywords": [
+    "console",
+    "commit",
+    "hidis",
+    "production",
+    "prod",
+    "hide"
+  ],
   "author": "Adekola Abdwahab",
   "license": "ISC",
   "type": "module",
   "dependencies": {
     "acorn": "^8.11.2",
-    "acorn-walk": "^8.3.0"
+    "escodegen": "^2.1.0"
   }
 }
