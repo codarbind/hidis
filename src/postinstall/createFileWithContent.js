@@ -24,6 +24,11 @@ export const createPrecommFile = () => {
   const code_index = `export * from "./glohidis.js";\n`;
   fs.writeFileSync(indexFilePath, code_index);
 
+  // Create the config.js file with sample code
+  const configPath = path.join(hidisFolderPath, "config.js");
+  const code_config = `import {modifyConfig} from "hidis";\nmodifyConfig();\nconsole.log('Done modifying 👍');\n`;
+  fs.writeFileSync(configPath, code_config);
+
   //upsert .gitignore file
   const gitignorePath = path.join(process.env.INIT_CWD, ".gitignore");
   if (!fs.existsSync(gitignorePath)) {

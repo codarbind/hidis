@@ -2,6 +2,7 @@ import fs from "fs";
 import * as acorn from "acorn";
 import childProcess from "child_process";
 import { generate } from "escodegen";
+import { _read_config } from "../config/config.js";
 
 export const get_files_to_modify = () => {
   const filesToModify = childProcess
@@ -18,9 +19,10 @@ export const modify_files_and_add = (
   disposableFunctionName = "hidis"
 ) => {
   // Code modification logic to remove disposable() functions
-
+  const { data } = _read_config();
   filesToModify.forEach((filePath) => {
     let code = fs.readFileSync(filePath, "utf8");
+    let initial_code = code;
     const ast = acorn.parse(code, {
       sourceType: "module",
       ecmaVersion: 8,
@@ -37,7 +39,12 @@ export const modify_files_and_add = (
 
     // Write the modified code back to the file
     fs.writeFileSync(filePath, code, "utf8");
-  });
+    // git add the file
+    childProcess.execSync(`git add ${filePath}`);
+    if (data.original === "true") {
+      // Return the file to its original form
 
-  childProcess.execSync(`git add ${filesToModify.join(" ")}`);
+      fs.writeFileSync(filePath, initial_code, "utf8");
+    }
+  });
 };
