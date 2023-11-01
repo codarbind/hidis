@@ -6,25 +6,39 @@ Hidis is a tool designed for developers who need to keep certain functions and c
 
 Hidis relies on pre commit hooks to achieve its goal.
 
-1. **Install Husky:** Confirm that you have the `husky` package installed. If not, you can install it using the following npm command:
+1.  **Install Husky:** Confirm that you have the `husky` package installed. If not, you can install it using the following npm command:
 
 ```shell
 
-npm i husky --save-dev
+
+
+npm  i  husky  --save-dev
+
+
 
 ```
 
-2. **Setup Husky for Hidis:** After installing Husky, run the following commands in your terminal:
+2.  **Setup Husky for Hidis:** After installing Husky, run the following commands in your terminal:
 
 ```shell
 
-npm pkg set scripts.prepare="husky install"
 
-npm run prepare
 
-npx husky add .husky/pre-commit "node .hidis/precomm.js"
+npm  pkg  set  scripts.prepare="husky install"
 
-git add .husky/pre-commit
+
+
+npm  run  prepare
+
+
+
+npx  husky  add  .husky/pre-commit  "node .hidis/precomm.js"
+
+
+
+git  add  .husky/pre-commit
+
+
 
 ```
 
@@ -34,23 +48,31 @@ To install Hidis, run the following command:
 
 ```shell
 
+
+
 npm  install  hidis  --save-dev
+
+
 
 ```
 
 ### Hidis Setup
 
-You need to import hidis only once but in your main /entry point file.
+Hidis creates a folder named (.hidis) inside your root directory.
 
-Import `hidis` like the below inside a file that you are sure would be loaded/required when the node server starts. It is called `main entry point file`. Your main file could be app.js or index.js. To confirm which file, check your `package.json` look for the value of main, that value/path leads to the file you are looking for
+You need to import this folder only once but in your main /entry point file.
+
+Import `hidis` like the below inside a file that you are sure would be loaded/required when the node server starts. It is called `main entry point file`. Your main file could be app.js or index.js. To confirm which file, check your `package.json` look for the value of main, that value/path leads to the file you are looking for.
+
+Also ensure that the path you provides (import from) currently points to the `.hidis/index.js`
 
 ```js
-import hidis from "hidis";
+import {} from "./.hidis/index.js";
 ```
 
 ## How does it work?
 
-To use Hidis, call the `hidis` function anywhere in your project. Hidis takes a string as an argument, so place your code inside single quotes. Make sure to separate more than one line of code with semicolons. Here's a sample:
+To use Hidis, call the `hidis` function anywhere in your project. Hidis takes a string as an argument. Make sure to separate more than one line of code with semicolons. Here's a sample:
 
 ```js
 hidis(
@@ -62,10 +84,14 @@ When you run `git commit -m {your commit message}` Hidis would hide `hidis` func
 
 ## Ghost Mode - Original Content
 
-Sometimes you still need the `hidis` functions on your local machine after committing/pushing, so deleting `hidis` functions might not present a good dev experience (DX).
+Sometimes you still need the `hidis` functions on your local machine after committing/pushing, so permanently deleting `hidis` functions at every commit might not present a good dev experience (DX).
 
 To ensure good DX you have the option to choose if you want the `hidis` functions permanently removed or not. Run the following command to change the config. the `default` is true (i.e. returns `hidis` functions back into their places)
 
 ```shell
-npm run hidisConfig -- original [false | true]
+
+npm  run  hidisConfig  --  original [false |  true]
+
 ```
+
+Tweet at me https://x.com/wahabind
