@@ -12,7 +12,11 @@ Hidis relies on pre commit hooks to achieve its goal.
 
 
 
+
+
 npm  i  husky  --save-dev
+
+
 
 
 
@@ -24,7 +28,11 @@ npm  i  husky  --save-dev
 
 
 
+
+
 npm  pkg  set  scripts.prepare="husky install"
+
+
 
 
 
@@ -32,11 +40,17 @@ npm  run  prepare
 
 
 
+
+
 npx  husky  add  .husky/pre-commit  "node .hidis/precomm.js"
 
 
 
+
+
 git  add  .husky/pre-commit
+
+
 
 
 
@@ -50,7 +64,11 @@ To install Hidis, run the following command:
 
 
 
+
+
 npm  install  hidis  --save-dev
+
+
 
 
 
@@ -60,7 +78,13 @@ npm  install  hidis  --save-dev
 
 Hidis creates a folder named (.hidis) inside your root directory.
 
-You need to import this folder only once but in your main /entry point file.
+You need to import this folder only once but in your main /entry point file and **in the first line.** If not imported at first line then you will get Reference error, it is like you want to use hidis before its birth. 😆
+
+```error
+
+ReferenceError: hidis is not defined
+
+```
 
 Import `hidis` like the below inside a file that you are sure would be loaded/required when the node server starts. It is called `main entry point file`. Your main file could be app.js or index.js. To confirm which file, check your `package.json` look for the value of main, that value/path leads to the file you are looking for.
 
@@ -90,7 +114,11 @@ To ensure good DX you have the option to choose if you want the `hidis` function
 
 ```shell
 
+
+
 npm  run  hidisConfig  --  original [false |  true]
+
+
 
 ```
 
