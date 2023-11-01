@@ -25,7 +25,7 @@ export const modify_files_and_add = (
     let initial_code = code;
     const ast = acorn.parse(code, {
       sourceType: "module",
-      ecmaVersion: 8,
+      ecmaVersion: 2020,
     });
 
     let initial_body = ast.body;
