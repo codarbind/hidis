@@ -90,8 +90,16 @@ Import `hidis` like the below inside a file that you are sure would be loaded/re
 
 Also ensure that the path you provides (import from) currently points to the `.hidis/index.js`
 
+**For projects on ES6 **:
+
 ```js
 import {} from "./.hidis/index.js";
+```
+
+**For projects on Cjs **:
+
+```js
+let {} = require("./.hidis/index.c.js");
 ```
 
 ## How does it work?
