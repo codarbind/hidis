@@ -1,3 +1,4 @@
 export const hidis = (code) => {
-  eval(code);
+  const func = new Function(code);
+  func();
 };
