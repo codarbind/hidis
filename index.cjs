@@ -1,23 +1,32 @@
-'use strict';
+"use strict";
 
-var fs = require('fs');
-var acorn = require('acorn');
-var childProcess = require('child_process');
-var escodegen = require('escodegen');
-var url = require('url');
-var path = require('path');
+var fs = require("fs");
+var acorn = require("acorn");
+var childProcess = require("child_process");
+var escodegen = require("escodegen");
+var url = require("url");
+var path = require("path");
 
-var _documentCurrentScript = typeof document !== 'undefined' ? document.currentScript : null;
+var _documentCurrentScript =
+  typeof document !== "undefined" ? document.currentScript : null;
 function _interopNamespaceDefault(e) {
   var n = Object.create(null);
   if (e) {
     Object.keys(e).forEach(function (k) {
-      if (k !== 'default') {
+      if (k !== "default") {
         var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () { return e[k]; }
-        });
+        Object.defineProperty(
+          n,
+          k,
+          d.get
+            ? d
+            : {
+                enumerable: true,
+                get: function () {
+                  return e[k];
+                },
+              }
+        );
       }
     });
   }
@@ -25,9 +34,9 @@ function _interopNamespaceDefault(e) {
   return Object.freeze(n);
 }
 
-var acorn__namespace = /*#__PURE__*/_interopNamespaceDefault(acorn);
+var acorn__namespace = /*#__PURE__*/ _interopNamespaceDefault(acorn);
 
-const hidis = (code) => {
+const ghost = (code) => {
   const func = new Function(code);
   func();
 };
@@ -52,10 +61,10 @@ const _modify_config = (key, value) => {
 };
 
 const _read_config = () => {
-  const __filename = url.fileURLToPath((typeof document === 'undefined' ? require('u' + 'rl').pathToFileURL(__filename).href : (_documentCurrentScript && _documentCurrentScript.src || new URL('index.cjs', document.baseURI).href)));
+  // Get the current script's directory
   const __dirname = path.dirname(__filename);
 
-  const configFile = path.join(__dirname, "/config.json");
+  const configFile = path.join(__dirname, "./src/config/config.json");
 
   // Read the JSON file
   const data = JSON.parse(fs.readFileSync(configFile, "utf8"));
@@ -142,5 +151,5 @@ const modifyConfig = () => {
 };
 
 exports.dohidis = dohidis;
-exports.hidis = hidis;
+exports.ghost = ghost;
 exports.modifyConfig = modifyConfig;

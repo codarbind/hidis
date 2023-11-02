@@ -16,7 +16,7 @@ export const createPrecommFile = () => {
 
   // Create the glohidis.js file with sample code
   const glohidisFilePath = path.join(hidisFolderPath, "glohidis.js");
-  const code_global = `import { hidis } from "hidis";\nglobalThis.hidis = hidis;\nexport const you = "be good, always";\n`;
+  const code_global = `import { ghost } from "hidis";\nglobalThis.hidis = ghost;\nexport const you = "be good, always";\n`;
   fs.writeFileSync(glohidisFilePath, code_global);
 
   // Create the index.js file with sample code
@@ -44,6 +44,36 @@ export const createPrecommFile = () => {
       fs.appendFileSync(gitignorePath, "\n.hidis/\n");
     }
   }
+
+  // Create the precomm.c.js file with sample code
+  const precommFilePathCjs = path.join(hidisFolderPath, "precomm.c.js");
+  const codeCjs = `const { dohidis } = require("hidis");
+dohidis();
+console.log('Done hiding 👍');
+`;
+  fs.writeFileSync(precommFilePathCjs, codeCjs);
+
+  // Create the glohidis.c.js file with sample code
+  const glohidisFilePathCjs = path.join(hidisFolderPath, "glohidis.c.js");
+  const code_globalCjs = `const { ghost } = require("hidis");
+global.hidis = ghost;
+exports.you = "be good, always";
+`;
+  fs.writeFileSync(glohidisFilePathCjs, code_globalCjs);
+
+  // Create the index.c.js file with sample code
+  const indexFilePathCjs = path.join(hidisFolderPath, "index.c.js");
+  const code_indexCjs = `module.exports = require("./glohidis.c.js");
+`;
+  fs.writeFileSync(indexFilePathCjs, code_indexCjs);
+
+  // Create the config.c.js file with sample code
+  const configPathCjs = path.join(hidisFolderPath, "config.c.js");
+  const code_configCjs = `const { modifyConfig } = require("hidis");
+modifyConfig();
+console.log('Done modifying 👍');
+`;
+  fs.writeFileSync(configPathCjs, code_configCjs);
 
   console.log("files created successfully.");
 };
