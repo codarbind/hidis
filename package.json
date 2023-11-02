@@ -1,6 +1,6 @@
 {
   "name": "hidis",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Hidis is a tool designed for developers who need to keep certain functions and code snippets on their local machines during development without committing or pushing them to remote branches (e.g., production).",
   "main": "index.js",
   "exports": {
@@ -19,14 +19,23 @@
     "prod",
     "hide"
   ],
-  "author": "Adekola Abdwahab",
+  "author": "Adekola Abdwahab <abdwahab@arbind101.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codarbind/hidis"
+  },
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@babel/generator": "^7.23.0",
+    "@babel/parser": "^7.23.0",
+    "@babel/traverse": "^7.23.2",
     "acorn": "^8.11.2",
+    "acorn-walk": "^8.3.0",
     "escodegen": "^2.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.2",
     "rollup": "^4.2.0"
   }
 }

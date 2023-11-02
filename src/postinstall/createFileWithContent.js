@@ -26,8 +26,13 @@ export const createPrecommFile = () => {
 
   // Create the config.js file with sample code
   const configPath = path.join(hidisFolderPath, "config.js");
-  const code_config = `import {modifyConfig} from "hidis";\nmodifyConfig();\nconsole.log('Done modifying 👍');\n`;
+  const code_config = `import {modifyConfig} from "hidis";\nmodifyConfig();\nconsole.log('Done modifying 🦸‍♂️');\n`;
   fs.writeFileSync(configPath, code_config);
+
+  // Create the config.json file with sample code
+  const configJsonPath = path.join(hidisFolderPath, "config.json");
+  const code_configJson = `{"original":"true"}\n`;
+  fs.writeFileSync(configJsonPath, code_configJson);
 
   //upsert .gitignore file
   const gitignorePath = path.join(process.env.INIT_CWD, ".gitignore");

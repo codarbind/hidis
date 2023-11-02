@@ -1,41 +1,14 @@
 "use strict";
 
 var fs = require("fs");
-var acorn = require("acorn");
+var generate = require("@babel/generator");
+var core = require("@babel/core");
 var childProcess = require("child_process");
-var escodegen = require("escodegen");
 var url = require("url");
 var path = require("path");
 
 var _documentCurrentScript =
   typeof document !== "undefined" ? document.currentScript : null;
-function _interopNamespaceDefault(e) {
-  var n = Object.create(null);
-  if (e) {
-    Object.keys(e).forEach(function (k) {
-      if (k !== "default") {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(
-          n,
-          k,
-          d.get
-            ? d
-            : {
-                enumerable: true,
-                get: function () {
-                  return e[k];
-                },
-              }
-        );
-      }
-    });
-  }
-  n.default = e;
-  return Object.freeze(n);
-}
-
-var acorn__namespace = /*#__PURE__*/ _interopNamespaceDefault(acorn);
-
 const ghost = (code) => {
   const func = new Function(code);
   func();
@@ -83,31 +56,29 @@ const get_files_to_modify = () => {
 
 const modify_files_and_add = (
   filesToModify,
-  disposableFunctionName = "hidis"
+  disposableFunctionName = "hidis",
+  sourceType = "module"
 ) => {
   // Code modification logic to remove disposable() functions
   const { data } = _read_config();
   filesToModify.forEach((filePath) => {
     let code = fs.readFileSync(filePath, "utf8");
     let initial_code = code;
-    const ast = acorn__namespace.parse(code, {
-      sourceType: "module",
-      ecmaVersion: 2020,
+
+    const ast = core.parse(code, {
+      sourceType, // Use 'module' for ESM
     });
 
-    let initial_body = ast.body;
-    let filtered_body = initial_body.filter((r_n) => {
-      return r_n.expression?.callee?.name !== disposableFunctionName;
-    });
+    removeFunctionCalls(ast, disposableFunctionName);
 
-    ast.body = filtered_body;
     // Convert the modified AST back to code
-    code = escodegen.generate(ast);
+    code = generate.default(ast).code;
 
-    // Write the modified code back to the file
+    // Write the modified code into the file
     fs.writeFileSync(filePath, code, "utf8");
     // git add the file
     childProcess.execSync(`git add ${filePath}`);
+
     if (data.original === "true") {
       // Return the file to its original form
 
@@ -115,6 +86,19 @@ const modify_files_and_add = (
     }
   });
 };
+
+function removeFunctionCalls(ast, disposableFunctionName) {
+  core.traverse(ast, {
+    CallExpression(path) {
+      if (
+        path.node.callee.type === "Identifier" &&
+        path.node.callee.name === disposableFunctionName
+      ) {
+        path.remove();
+      }
+    },
+  });
+}
 
 const dohidis = (disposableFunctionName = "hidis") => {
   const filesToModify = get_files_to_modify();

@@ -1,7 +1,10 @@
 import fs from "fs";
-import * as acorn from "acorn";
+//import parser from "@babel/parser";
+//import traverse from "@babel/traverse";
+import generate from "@babel/generator";
+import { traverse, parse } from "@babel/core";
 import childProcess from "child_process";
-import { generate } from "escodegen";
+
 import { _read_config } from "../config/config.js";
 
 export const get_files_to_modify = () => {
@@ -16,31 +19,29 @@ export const get_files_to_modify = () => {
 
 export const modify_files_and_add = (
   filesToModify,
-  disposableFunctionName = "hidis"
+  disposableFunctionName = "hidis",
+  sourceType = "module"
 ) => {
   // Code modification logic to remove disposable() functions
   const { data } = _read_config();
   filesToModify.forEach((filePath) => {
     let code = fs.readFileSync(filePath, "utf8");
     let initial_code = code;
-    const ast = acorn.parse(code, {
-      sourceType: "module",
-      ecmaVersion: 2020,
+
+    const ast = parse(code, {
+      sourceType, // Use 'module' for ESM
     });
 
-    let initial_body = ast.body;
-    let filtered_body = initial_body.filter((r_n) => {
-      return r_n.expression?.callee?.name !== disposableFunctionName;
-    });
+    removeFunctionCalls(ast, disposableFunctionName);
 
-    ast.body = filtered_body;
     // Convert the modified AST back to code
-    code = generate(ast);
+    code = generate.default(ast).code;
 
-    // Write the modified code back to the file
+    // Write the modified code into the file
     fs.writeFileSync(filePath, code, "utf8");
     // git add the file
     childProcess.execSync(`git add ${filePath}`);
+
     if (data.original === "true") {
       // Return the file to its original form
 
@@ -48,3 +49,16 @@ export const modify_files_and_add = (
     }
   });
 };
+
+function removeFunctionCalls(ast, disposableFunctionName) {
+  traverse(ast, {
+    CallExpression(path) {
+      if (
+        path.node.callee.type === "Identifier" &&
+        path.node.callee.name === disposableFunctionName
+      ) {
+        path.remove();
+      }
+    },
+  });
+}
