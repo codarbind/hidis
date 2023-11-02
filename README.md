@@ -1,8 +1,11 @@
 # Why Hidis?
 
 Supports ES6 ✅
+
 Supports JS ✅
+
 Supports Typescript ❌ - coming soon
+
 Supports CJS ✅
 
 Hidis is a tool designed for developers who need to keep certain functions and code snippets on their local machines during development without committing or pushing them to remote branches (e.g., production).
