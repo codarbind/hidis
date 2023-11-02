@@ -1,4 +1,4 @@
-export const hidis = (code) => {
+export const ghost = (code) => {
   const func = new Function(code);
   func();
 };
