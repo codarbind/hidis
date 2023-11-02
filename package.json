@@ -1,6 +1,6 @@
 {
   "name": "hidis",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Hidis is a tool designed for developers who need to keep certain functions and code snippets on their local machines during development without committing or pushing them to remote branches (e.g., production).",
   "main": "index.js",
   "exports": {
