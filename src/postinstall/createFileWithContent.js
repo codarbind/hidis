@@ -26,7 +26,7 @@ export const createPrecommFile = () => {
 
   // Create the config.js file with sample code
   const configPath = path.join(hidisFolderPath, "config.js");
-  const code_config = `import {modifyConfig} from "hidis";\nmodifyConfig();\nconsole.log('Done modifying 🦸‍♂️');\n`;
+  const code_config = `import {modifyConfig} from "hidis";\nmodifyConfig();\nconsole.log('Done modifying 😋');\n`;
   fs.writeFileSync(configPath, code_config);
 
   // Create the config.json file with sample code
